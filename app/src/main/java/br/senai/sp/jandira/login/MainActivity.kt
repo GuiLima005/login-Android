@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                                         shape = RoundedCornerShape(bottomStart = 20.dp)
                                     )
                                 ) {}
+                        }
                             Spacer(modifier = Modifier.height(130.dp))
 
                             Column(
@@ -106,25 +107,50 @@ class MainActivity : ComponentActivity() {
                             Spacer(modifier = Modifier.height(30.dp))
 
                             Column(
-                                modifier = Modifier.fillMaxWidth().padding(end = 20.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(end = 20.dp),
                                 horizontalAlignment = Alignment.End
                             ) {
                                 Button(onClick = {},
-                                    modifier = Modifier.width(134.dp).height(48.dp).background(color = Color(207, 6, 240)),
+                                    modifier = Modifier
+                                        .width(134.dp)
+                                        .height(48.dp)
+                                        , colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black),
                                     shape = RoundedCornerShape(16.dp),
-
 
                                     ) {
                                     Text(text = stringResource(id = R.string.button_login),
                                     color = Color.White)
-
-
+                                    Row(modifier = Modifier.fillMaxWidth()) {
+                                        Text(text = stringResource(id = R.string.title_sing_up))
+                                    }
                                 }
-
+                            }
+                            Row( modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End)
+                            {
+                                Text(text = stringResource(id = R.string.new_account),Modifier.padding(top = 15.dp),
+                                    fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Color(160, 156, 156)
+                                )
+                                Text(text = stringResource(id = R.string.title_sing_up),Modifier.padding(end = 20.dp, start = 10.dp, top = 15.dp),
+                                    fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Color(207, 6, 240)
+                                )
                             }
 
-                        }
+                            Column (
+                                modifier = Modifier.fillMaxHeight(),
+                                verticalArrangement = Arrangement.Bottom
 
+                            ) {
+                                Card (modifier = Modifier
+                                    .width(150.dp)
+                                    .height(50.dp),
+                                    shape = RoundedCornerShape(topEnd = 28.dp),
+                                    backgroundColor = Color(207, 6, 240),){
+
+                                }
+                            }
                     }
                 }
             }
@@ -137,7 +163,7 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     LoginTheme {
