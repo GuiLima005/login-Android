@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +25,13 @@ import br.senai.sp.jandira.login.ui.theme.LoginTheme
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             LoginTheme {
+
+                val  context = LocalContext.current
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -172,7 +178,11 @@ class SignUpActivity : ComponentActivity() {
                                 fontSize = 14.sp, fontWeight = FontWeight.Light, color = Color(160, 156, 156)
                             )
                             Text(text = stringResource(id = R.string.button_login),
-                                Modifier.padding(end = 20.dp, start = 10.dp),
+                                Modifier.padding(end = 20.dp, start = 10.dp)
+                                    .clickable {
+                                        val intent = Intent(context, HomeActivity::class.java)
+                                        context.startActivity(intent)
+                                },
                                 fontSize = 14.sp, color = Color(207, 6, 240)
                             )
                         }
@@ -189,9 +199,6 @@ class SignUpActivity : ComponentActivity() {
 
                             }
                         }
-
-
-
                     }
                 }
             }
