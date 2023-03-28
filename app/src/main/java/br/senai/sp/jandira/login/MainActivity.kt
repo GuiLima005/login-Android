@@ -1,13 +1,10 @@
 package br.senai.sp.jandira.login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.login.components.BottomShape
+import br.senai.sp.jandira.login.components.TopShape
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
 
 class MainActivity : ComponentActivity() {
@@ -47,13 +46,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.End
                         ) {
-                            Card (modifier = Modifier
-                                .width(150.dp)
-                                .height(50.dp),
-                                shape = RoundedCornerShape(bottomStart =  28.dp),
-                                backgroundColor = Color(207, 6, 240),){
-
-                            }
+                            TopShape()
                         }
                             Spacer(modifier = Modifier.height(100.dp))
 
@@ -93,7 +86,11 @@ class MainActivity : ComponentActivity() {
                                                 .size(30.dp)
                                                 .padding(start = 5.dp)
                                             )
-                                    }
+                                    },
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color(207, 6, 240),
+                                        unfocusedBorderColor = Color(207, 6, 240)
+                                    )
                                 )
 
                                 OutlinedTextField(
@@ -112,7 +109,11 @@ class MainActivity : ComponentActivity() {
                                                 .size(30.dp)
                                                 .padding(start = 5.dp)
                                         )
-                                    }
+                                    },
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color(207, 6, 240),
+                                        unfocusedBorderColor = Color(207, 6, 240)
+                                    )
                                 )
                             }
                             Spacer(modifier = Modifier.height(30.dp))
@@ -143,11 +144,12 @@ class MainActivity : ComponentActivity() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Light, color = Color(160, 156, 156)
                                 )
                                 Text(text = stringResource(id = R.string.title_sing_up),
-                                    Modifier.padding(end = 20.dp, start = 10.dp, top = 28.dp)
+                                    Modifier
+                                        .padding(end = 20.dp, start = 10.dp, top = 28.dp)
                                         .clickable {
-                                                   val intent = Intent(context, SignUpActivity::class.java)
+                                            val intent = Intent(context, SignUpActivity::class.java)
                                             context.startActivity(intent)
-                                },
+                                        },
                                     fontSize = 14.sp, color = Color(207, 6, 240)
                                 )
                             }
@@ -157,17 +159,8 @@ class MainActivity : ComponentActivity() {
                                 verticalArrangement = Arrangement.Bottom
 
                             ) {
-                                Card (modifier = Modifier
-                                    .width(150.dp)
-                                    .height(50.dp),
-                                    shape = RoundedCornerShape(topEnd = 28.dp),
-                                    backgroundColor = Color(207, 6, 240),){
-
-                                }
+                                BottomShape()
                             }
-
-
-
                     }
                 }
             }
