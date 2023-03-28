@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.login
+package br.senai.sp.jandira.login.gui
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.login.R
 import br.senai.sp.jandira.login.components.BottomShape
 import br.senai.sp.jandira.login.components.TopShape
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
