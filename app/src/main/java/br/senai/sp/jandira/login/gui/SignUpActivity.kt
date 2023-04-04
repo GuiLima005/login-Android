@@ -2,6 +2,7 @@ package br.senai.sp.jandira.login.gui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -28,12 +29,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.login.R
+import br.senai.sp.jandira.login.model.User
+import br.senai.sp.jandira.login.repository.UserRepository
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val user = User(
+            userName = "Maria da Silva",
+            email = "maria@terra.com.br",
+            password = "123456",
+            phone = "(11)99999-9999",
+            isOver18 = true
+        )
+
+        val userRep = UserRepository(this)
+
+        var id = userRep.save(user)
+
+        Toast.makeText(this, "$id", Toast.LENGTH_LONG).show()
 
         setContent {
             LoginTheme {
