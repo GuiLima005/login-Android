@@ -2,6 +2,7 @@ package br.senai.sp.jandira.login.gui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -46,6 +47,10 @@ class SignUpActivity : ComponentActivity() {
 
         setContent {
             LoginTheme {
+
+                var photUri by remember {
+                    mutableStateOf<Uri?>(null)
+                }
 
                 var scrollState = rememberScrollState()
 
@@ -372,11 +377,15 @@ class SignUpActivity : ComponentActivity() {
         // Verificar se o usuário já existe
         val user = userRepository.findUserByEmail(email)
         Log.i("ds3m", "${user.toString()}")
+
 //
         // Salvar o usúario
         if (user == null) {
             val id = userRepository.save(newUser)
             Toast.makeText(context, "Created User #$id", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "User already exists!", Toast.LENGTH_SHORT).show()
+
         }
 
 

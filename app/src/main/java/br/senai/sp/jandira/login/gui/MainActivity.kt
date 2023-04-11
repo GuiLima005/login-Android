@@ -1,15 +1,19 @@
 package br.senai.sp.jandira.login.gui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,12 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.login.R
 import br.senai.sp.jandira.login.components.BottomShape
 import br.senai.sp.jandira.login.components.TopShape
+import br.senai.sp.jandira.login.repository.UserRepository
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,6 +43,14 @@ class MainActivity : ComponentActivity() {
             LoginTheme {
                 // A surface container using the 'background' color from the theme
                 val  context = LocalContext.current
+
+                var emailState by remember {
+                    mutableStateOf("")
+                }
+
+                var passwordState by remember {
+                    mutableStateOf("")
+                }
 
                 Surface(
                     modifier = Modifier.fillMaxSize()
@@ -72,13 +87,14 @@ class MainActivity : ComponentActivity() {
                                 horizontalAlignment = Alignment.Start) {
 
                                 OutlinedTextField(
-                                    value = "",
-                                    onValueChange = { ""
+                                    value = emailState,
+                                    onValueChange = { emailState = it
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 80.dp, start = 17.dp, end = 17.dp),
                                     shape = RoundedCornerShape(16.dp),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                                     leadingIcon = {
                                         Image(painter = painterResource
                                             (id = R.drawable.email),
@@ -95,13 +111,14 @@ class MainActivity : ComponentActivity() {
                                 )
 
                                 OutlinedTextField(
-                                    value = "",
-                                    onValueChange = { ""
+                                    value = passwordState,
+                                    onValueChange = { passwordState = it
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 31.dp, start = 17.dp, end = 17.dp),
                                     shape = RoundedCornerShape(16.dp),
+                                    visualTransformation = PasswordVisualTransformation(),
                                     leadingIcon = {
                                         Image(painter = painterResource
                                             (id = R.drawable.password),
@@ -125,7 +142,13 @@ class MainActivity : ComponentActivity() {
                                     .padding(end = 20.dp),
                                 horizontalAlignment = Alignment.End
                             ) {
-                                Button(onClick = {},
+                                Button(onClick = {
+                                                 authenticate(
+                                                     emailState,
+                                                     passwordState,
+                                                     context
+                                                 )
+                                },
                                     modifier = Modifier
                                         .width(134.dp)
                                         .height(48.dp)
@@ -167,7 +190,27 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun authenticate(email: String, password: String, context: Context) {
+
+        val userRepository = UserRepository(context)
+
+        val user = userRepository.authenticate(email, password)
+
+        if (user == null) {
+            Toast.makeText(context, "User or password incorrect", Toast.LENGTH_SHORT).show()
+        } else {
+            val intent = Intent(context, HomeActivity::class.java)
+            context.startActivity(intent)
+        }
+
+    }
+
+
+
 }
+
+
 
 @Composable
 fun Greeting(name: String) {

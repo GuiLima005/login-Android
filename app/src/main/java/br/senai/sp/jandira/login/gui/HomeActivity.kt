@@ -33,6 +33,7 @@ class HomeActivity : ComponentActivity() {
                     {
                         Column(modifier = Modifier.height(197.dp).fillMaxWidth().background(Color.Cyan)) {
 
+
                         }
 
                     }
