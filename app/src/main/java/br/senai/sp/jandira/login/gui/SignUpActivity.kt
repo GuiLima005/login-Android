@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.rememberScrollState
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,6 +26,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +40,9 @@ import br.senai.sp.jandira.login.R
 import br.senai.sp.jandira.login.model.User
 import br.senai.sp.jandira.login.repository.UserRepository
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import kotlin.math.log
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +54,23 @@ class SignUpActivity : ComponentActivity() {
         setContent {
             LoginTheme {
 
-                var photUri by remember {
+                var photoUri by remember {
                     mutableStateOf<Uri?>(null)
                 }
+
+                // variavel que vai pegar a URI
+                var launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.GetContent()
+                ) { uri ->
+                    photoUri = uri
+                }
+
+                // variavel que vai transforma a URI em uma image
+                var painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(photoUri)
+                        .build()
+                )
 
                 var scrollState = rememberScrollState()
 
@@ -75,7 +95,6 @@ class SignUpActivity : ComponentActivity() {
                 }
 
                 val context = LocalContext.current
-
 
 
                 // A surface container using the 'background' color from the theme
@@ -127,24 +146,46 @@ class SignUpActivity : ComponentActivity() {
 
                         Spacer(modifier = Modifier.height(21.dp))
 
-
-                        Box(
-                            modifier = Modifier.size(100.dp)
-                            //contentAlignment = Alignment.BottomStart
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Card(
-                                modifier = Modifier.size(100.dp),
-                                shape = CircleShape,
-                                backgroundColor = Color.Yellow
-                            ) {
+                            Box(
 
+                            ) {
+                                Card(
+                                    modifier = Modifier.size(100.dp),
+                                    shape = CircleShape,
+                                    backgroundColor = Color(232, 232, 232),
+                                ) {
+                                    Image(
+                                        painter = if (photoUri == null) {
+                                            painterResource(id = R.drawable.perfil)
+                                        } else {
+                                            painter
+                                        },
+                                        contentDescription = null,
+                                        contentScale = ContentScale.FillBounds
+                                    )
+                                }
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomEnd)
+                                        .clickable {
+                                            launcher.launch("image/*")
+                                            var message = "nada"
+                                            Log.i(
+                                                "ds2m",
+                                                "${photoUri?.path ?: message}"
+                                            )
+                                        }
+                                )
                             }
-                            Icon(
-                                imageVector = Icons.Default.Place,
-                                contentDescription = null,
-                                modifier = Modifier.align(Alignment.BottomEnd)
-                            )
+
                         }
+
 
                         Spacer(modifier = Modifier.height(35.dp))
 
@@ -285,9 +326,10 @@ class SignUpActivity : ComponentActivity() {
                                             emailState,
                                             passwordState,
                                             over18State,
+                                            photoUri?.path ?: "",
                                             context
 
-                                            )
+                                        )
                                     },
                                     modifier = Modifier
                                         .height(48.dp)
@@ -358,6 +400,7 @@ class SignUpActivity : ComponentActivity() {
         email: String,
         password: String,
         isOver18: Boolean,
+        profilePhotoUri: String,
         context: Context
     ) {
 
@@ -368,7 +411,8 @@ class SignUpActivity : ComponentActivity() {
             phone = phone,
             email = email,
             password = password,
-            isOver18 = isOver18
+            isOver18 = isOver18,
+            profilePhoto = profilePhotoUri
         )
 
         // Criando uma instância do repositório

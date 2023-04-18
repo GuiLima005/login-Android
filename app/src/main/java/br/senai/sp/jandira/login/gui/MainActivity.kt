@@ -201,6 +201,9 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(context, "User or password incorrect", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(context, HomeActivity::class.java)
+
+            intent.putExtra("id", user.id)
+            intent.putExtra("name", user.userName)
             context.startActivity(intent)
         }
 

@@ -1,13 +1,11 @@
 package br.senai.sp.jandira.login.gui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -21,6 +19,14 @@ import br.senai.sp.jandira.login.ui.theme.LoginTheme
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        intent.extras
+
+        Log.i(
+            "ds2m",
+            "id"
+        )
+
         setContent {
             LoginTheme {
                 // A surface container using the 'background' color from the theme
@@ -31,8 +37,18 @@ class HomeActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(Color.Red))
                     {
-                        Column(modifier = Modifier.height(197.dp).fillMaxWidth().background(Color.Cyan)) {
+                        Column(modifier = Modifier
+                            .height(197.dp)
+                            .fillMaxWidth()
+                            .background(Color.Cyan)) {
 
+                            Row(
+                                modifier = Modifier.fillMaxWidth().background(Color.Black)
+                            ) {
+
+
+
+                            }
 
                         }
 
