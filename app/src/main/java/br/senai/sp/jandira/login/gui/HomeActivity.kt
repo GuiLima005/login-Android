@@ -7,20 +7,31 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.login.R
+import br.senai.sp.jandira.login.model.Category
+import br.senai.sp.jandira.login.model.Trip
+import br.senai.sp.jandira.login.repository.CategoryRepository
+import br.senai.sp.jandira.login.repository.TripRepository
 import br.senai.sp.jandira.login.ui.theme.LoginTheme
 
 class HomeActivity : ComponentActivity() {
@@ -41,7 +52,10 @@ class HomeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
 
-                    HomeScreen ("Android")
+                    HomeScreen (
+                        CategoryRepository.getCategories(),
+                        TripRepository.getTrips()
+                    )
 
                 }
             }
@@ -50,7 +64,10 @@ class HomeActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(name: String) {
+fun HomeScreen(
+    categories: List<Category>,
+    trips: List<Trip>
+) {
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -58,7 +75,8 @@ fun HomeScreen(name: String) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp).fillMaxWidth()
+                .height(200.dp)
+                .fillMaxWidth()
                 , shape = RectangleShape
         ) {
 
@@ -71,8 +89,110 @@ fun HomeScreen(name: String) {
         Text(text = stringResource(id = br.senai.sp.jandira.login.R.string.categories),
             color = Color (56, 54, 54 ),
             fontSize = 14.sp,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+            modifier = Modifier.padding(start = 17.dp, top = 16.dp)
         )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        LazyRow() {
+
+            var cidade = listOf(1.0, 2.0, 4.5, 8.4, 5.2)
+
+            items(categories) {
+
+                Card(
+                    modifier = Modifier
+                        .size(width = 120.dp, height = 65.dp)
+                        .padding(horizontal = 9.dp),
+                    backgroundColor = Color(207, 6, 240)
+                ) {
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+
+                    ) {
+                        Image(
+                            painter = it.categoryIcon,
+                            contentDescription = it.categoryName
+                        )
+
+                        Text(text = it.categoryName,
+                            fontSize = 14.sp,
+                            color = Color.White
+                        )
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        OutlinedTextField(value = "",
+            onValueChange = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            shape = RoundedCornerShape(16.dp),
+            placeholder = {
+                Text(text = stringResource(id = R.string.search))
+
+            },
+            trailingIcon = {
+
+                IconButton(
+                    onClick = {}
+                ) {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
+                }
+            }
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 17.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.past_trips),
+                fontSize = 14.sp,
+                color = Color(86,84,84)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(19.dp))
+
+        LazyColumn() {
+            items(trips) {
+
+                Card(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(15.dp),
+                    backgroundColor = Color.Cyan
+                ) {
+
+                    Column (
+                        modifier = Modifier.padding(8.dp)
+                            ) {
+                        Image(painter = painterResource(id = R.drawable.no_photography_24), contentDescription = "")
+
+                        Text(text = "${it.location}, ${it.startDate.year}")
+
+                        Text(text = "${it.description}")
+
+                        Text(
+                            text = "${it.startDate} - ${it.endDate}",
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                }
+            }
+
+        }
 
     }
 }
@@ -82,6 +202,9 @@ fun HomeScreen(name: String) {
 @Composable
 fun DefaultPreview3() {
     LoginTheme {
-        HomeScreen ("Android")
+        HomeScreen (
+            CategoryRepository.getCategories(),
+            TripRepository.getTrips()
+        )
     }
 }

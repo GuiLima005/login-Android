@@ -19,9 +19,13 @@ class CategoryRepository {
                     categoryName = "Snow",
                     categoryIcon = painterResource(id = R.drawable.snowboarder)
                 ),
-                Category(id = 1,
+                Category(id = 3,
                     categoryName = "Beach",
                     categoryIcon = painterResource(id = R.drawable.breach)
+                ),
+                Category(id = 4,
+                    categoryName = "Suitcase",
+                    categoryIcon = painterResource(id = R.drawable.suitcase)
                 ),
             )
         }
