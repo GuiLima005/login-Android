@@ -15,9 +15,9 @@
 
     // Strings da Terceira Tela
     <string name="profile_name">Susanna Hoffs</string>
+    <string name="categories">Categories</string>
     <string name="rest_of_location">You`re in Paris</string>
     <string name="my_trips">My Trips</string>
-    <string name="categories_trips">Categories</string>
 
     // Strings dos OutlinedTextField
 
